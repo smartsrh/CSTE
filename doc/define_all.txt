@@ -1,0 +1,83 @@
+###vul define
+
+##basic info
+#vul's name
+name:
+
+#designer's name
+designer:
+
+#simple introduce about the vul
+intro:
+
+
+##conf info
+#support run_all: yes, no
+run_all:
+
+#support check: yes, no
+check:
+
+
+##vul info
+#benchmark: basic, ext, study, research, unsorted
+bench:
+
+#bit: 32, 64
+bit:
+
+#vul'type: stack_overflow, heap_overflow, BSS_overflow, double_free, use_afer_free, format_string, memory_leak, other, hybrid_vuls
+vul_type:
+
+#number of vul in program: (default is 1)
+vul_num:
+
+
+##attack info
+#attack model: data, program
+attack_model:
+
+#input_num = normal_num + attack_num, default is 2
+input_num:
+
+#number of normal input, default is 1
+normal_num:
+
+#number of attack input, default is 1
+attack_num:
+
+#info of normal input
+normal_class [0 ~ normal_num-1] {
+
+#normal input name
+normal_name: 
+
+#simple introduce about the normal input
+normal_intro:
+
+}
+
+#info of attack input
+attack_class [0 ~ attack_num-1] {
+
+#attack input name
+attack_name:
+
+#attack type: code_injection, r2libc, rop, jop, fop, other_code_reuse(other code reuse attacks, except r2libc/rop/jop/fop), dop, other_non_control_data(other non-control-data attacks, except dop), other(other attacks), hybrid_attacks
+attack_type:
+
+#aslr status: on, off
+aslr:
+
+#dep status: on, off
+dep:
+
+#stack cookie status: on, off
+stack_cookie:
+
+#simple introduce about the attack input
+attack_intro:
+
+}
+
+
