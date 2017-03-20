@@ -4,17 +4,23 @@
   "description":"This is a classic stack_overflow vul.",
 
   "bench":"unsorted",
+  "support_run_all":false,
   "bit":64,
-  "vul_type":"stack_overflow",
-  "vul_num":1,
+  "vul_type":["stack_overflow"],
   "attack_model":"data",
   "default_attack_name":"code_injection",
   "default_normal_name":"normal_input",
 
+  "vul_path":"./...",
+  "compile":"./compile.sh",
+  "support_check":true,
+  "check_path":"./...",
+
   "normal_class":[
     {
       "name":"normal_input",
-      "description":""
+      "description":"",
+      "path":"./..."
     }
   ],
 
@@ -22,6 +28,7 @@
     {
       "name":"code_injection",
       "description":"",
+      "path":"./...",
       "type":"code_injection",
       "security_bypass":{
         "dep":false,
