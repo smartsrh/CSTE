@@ -1,0 +1,35 @@
+{
+  "name":"stack_overflow_gyj_001",
+  "designer":"guoyingjie",
+  "description":"This is a classic stack_overflow vul.",
+
+  "bench":"unsorted",
+  "bit":64,
+  "vul_type":"stack_overflow",
+  "vul_num":1,
+  "attack_model":"data",
+  "default_attack_name":"code_injection",
+  "default_normal_name":"normal_input",
+
+  "normal_class":[
+    {
+      "name":"normal_input",
+      "description":""
+    }
+  ],
+
+  "attack_class":[
+    {
+      "name":"code_injection",
+      "description":"",
+      "type":"code_injection",
+      "security_bypass":{
+        "dep":false,
+        "aslr":false,
+        "stack_cookie":false
+      }
+    }
+  ]
+
+}
+
