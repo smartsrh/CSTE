@@ -13,7 +13,6 @@
 
   "vul_path":"./...",
   "compile":"./compile.sh",
-  "support_check":true,
   "check_path":"./...",
 
   "normal_class":[
