@@ -64,13 +64,9 @@ class Case():
 
     def check(self):
         '''Return check answer.'''
-        if self.define_data["support_check"]:
-            p = subprocess.Popen(self.define_data["check_path"], stdout=subprocess.PIPE, shell= True)
-            res = p.stdout.read().strip()
-            return res
-        else:
-            print "Check not supported"
-            return None
+        p = subprocess.Popen(self.define_data["check_path"], stdout=subprocess.PIPE, shell= True)
+        res = p.stdout.read().strip()
+        return res
 
 
 
