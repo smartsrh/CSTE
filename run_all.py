@@ -95,17 +95,13 @@ class ui(cmd.Cmd):
         print "Now selected %d cases" % len(select_cases)
 
     def do_run(self, line):
-        if line.startswith('normal'):
-            attack = False
-        else:
-            attack = True
         if select_cases:
             for case in select_cases:
-                case.run(attack=attack)
+                case.run()
         else:
             print "No case selected, run all."
             for case in cases:
-                case.run(attack=attack)
+                case.run()
 
     def do_check(self, line):
         '''Check all selected.'''
