@@ -1,5 +1,5 @@
 {
-  "name":"stack_overflow_gyj_001",
+  "name":"stack_overflow",
   "designer":"guoyingjie",
   "description":"This is a classic stack_overflow vul.",
 
@@ -9,25 +9,25 @@
   "vul_type":["stack_overflow"],
   "attack_model":"data",
   "default_attack_name":"code_injection",
-  "default_normal_name":"normal_input",
+  "default_normal_name":"hello_world_normal",
 
-  "vul_path":"./...",
+  "vul_path":"./vul/",
   "compile":"./compile.sh",
-  "check_path":"./...",
+  "check_path":"./check/",
 
   "normal_class":[
     {
-      "name":"normal_input",
-      "description":"",
-      "path":"./..."
+      "name":"hello_world_normal",
+      "description":"Print hello world",
+      "path":"./input/hello_world_normal.txt"
     }
   ],
 
   "attack_class":[
     {
       "name":"code_injection",
-      "description":"",
-      "path":"./...",
+      "description":"The function is writing string to output file",
+      "path":"./input/code_injection.txt",
       "type":"code_injection",
       "security_bypass":{
         "dep":false,
