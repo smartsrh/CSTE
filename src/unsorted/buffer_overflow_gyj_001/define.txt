@@ -1,0 +1,33 @@
+name=stack_overflow_gyj_001
+designer=guoyingjie
+describe="This is a classic stack_overflow vul."
+
+bench=unsorted
+bit=64
+vul_type=stack_overflow
+vul_num=1
+attack_model=data
+input_num=2
+normal_num=1
+attack_num=1
+default_attack_name=code_injection
+default_normal_name=normal_input
+
+normal_class [0] {
+normal_name=normal_input
+normal_describe=""
+}
+
+attack_class [0] {
+attack_name=code_injection
+attack_type=code_injection
+
+security_bypass=???
+dep
+aslr
+stack_cookie
+
+attack_describe=""
+}
+
+
