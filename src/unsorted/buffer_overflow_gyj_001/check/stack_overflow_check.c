@@ -26,8 +26,11 @@ void check(){
     tmp =  (char *)malloc(file_size * sizeof(char));
     fread(tmp, file_size, sizeof(char), fp);
     tmp[file_size-1]='\0';
+    if(strcmp(tmp,"buffer_overflow_gyj_001 attack succeeded")==0)
+        printf("Success: Stack overflow attack succeeded\n");
+    else
+        printf("Fail: Stack overflow attack failed\n");
     fclose(fp); 
-    printf("%s\n",tmp);
 }
 
 int main(){
