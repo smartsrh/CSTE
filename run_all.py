@@ -10,7 +10,12 @@ from tools.script_tools import *
 
 cases = []
 select_cases = []
+
+select_bench = []
+select_vul = []
 select_attack = []
+attack_mode = True
+
 report_buf = []
 
 root_path=os.path.abspath('.')
@@ -45,24 +50,30 @@ class ui(cmd.Cmd):
 
     def do_show(self, line):
         '''
-        Show all available test cases.
+        Options:
+        bench, vul, attack, mode
+
         Format:
-        show                            show all test cases
+        show                            show all settings
         show vul/v                      show all vulnerability types
-        show vul/v [vul_name]           show all test cases in the vulnerability type
         show attacks/a                  show all attack types
-        show attack/a [attack_name]     show all test cases in the attack type
         show bench/b                    show all benchmarks
-        show bench/b [bench_name]       show all test cases under the benchmark'''
+        mode: attack/normal
+
+        Use "set key value" to set these options.
+        Use "run" to run all test cases.
+        Use "show selected" to confirm the options.
+        '''
         global cases,select_cases
         i = 1
         types=set()
 
         # if all
         if len(line.split())==0:
-            for case in cases:
-                print i, ':', case.path.replace(os.path.abspath(root_path+'/src')+'/','')
-                i += 1
+            self.do_help("show")
+            #for case in cases:
+            #    print i, ':', case.path.replace(os.path.abspath(root_path+'/src')+'/','')
+            #    i += 1
         # if 1 arg
         elif len(line.split())==1:
             # if vul
@@ -104,18 +115,48 @@ class ui(cmd.Cmd):
     def do_guide(self, line):
         print self.intro
 
-    def do_select(self, line):
-        '''Select by number/path/tag'''
+    def do_set(self, line):
+        '''Select all/by bench/vul type/attack type/attack/normal
+        Format:
+        (default)                               select all
+        set bench/b [bench_name]             select all test cases in the bench
+        set vul/v [vul_type]                 select all test cases in the vulnerability type
+        set attack/a [attack_type]           select all test cases with the attack_type(and select attack mode)
+        set attack/a                         select attack mode(default)
+        set normal/n                         select normal mode
+        set 1,3...(numbers)                  select by numbers
+        '''
         global cases,select_cases
+        # if number
         if line[0] in '0123456789':
             indexes = [int(i)-1 for i in line.split()]
             select_cases = [cases[i]  for i in indexes]
-        elif line.startswith('tag'):
-            select_cases = [case for case in cases if line.split(None,1)[1].strip() in case.tags]
-        else:   # path
-            select_cases = [case for case in cases if
-                case.path.startswith(os.path.abspath(root_path+'/src/'+line.strip()))]
+        # if bench
+        elif line.startswith('b'):
+            arg = line.split()[1] if len(line.split())>1 else None
+            if not arg :print "Format error."; return
+            select_cases = [case for case in cases if case.define_data['bench']==arg]
+        # if vul
+        elif line.startswith('v'):
+            arg = line.split()[1] if len(line.split())>1 else None
+            if not arg :print "Format error."; return
+            select_cases = [case for case in cases if arg in case.define_data['vul_type']]
+        # if attack
+        elif line.startswith('a'):
+            arg = line.split()[1] if len(line.split())>1 else None
+            # if attack arg
+            if arg:
+                select_cases = [case for case in cases if arg in [i["type"] for i in case.define_data["attack_class"]]]
+                select_attack.append(arg)
+                attack_mode = True
+            # if attack only
+            else:
+                attack_mode = True
+        # if normal
+        elif line.startswith:
             pass
+
+
 
         print "Now selected %d cases" % len(select_cases)
 
@@ -183,17 +224,9 @@ Format: aslr status/check/on/off/conservative'''
     def complete_aslr(self, text, line, begidx, endidx):
         return [i for i in ['status', 'check', 'on', 'off', 'conservative'] if i.startswith(text)]
 
-    def do_attach(self, line):
-        '''Run a case and attach it.'''
-        print '''Not implement yet.'''
-
     def do_q(self, line):
         '''Quit.'''
         return True
-
-    def do_info(self, line):
-        '''Show info of cases'''
-        print '''Not implement yet.'''
 
 
 CSTEui = ui()
