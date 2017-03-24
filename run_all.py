@@ -10,6 +10,7 @@ from tools.script_tools import *
 
 cases = []
 select_cases = []
+select_attack = []
 report_buf = []
 
 root_path=os.path.abspath('.')
@@ -43,38 +44,62 @@ class ui(cmd.Cmd):
         cases = list_cases(path)
 
     def do_show(self, line):
-        '''Show all available test cases.
+        '''
+        Show all available test cases.
         Format:
-        show                            show all
-        show [path_name]                show all under the path
-        show tag [tag_name]             show all with the tag'''
+        show                            show all test cases
+        show vul/v                      show all vulnerability types
+        show vul/v [vul_name]           show all test cases in the vulnerability type
+        show attacks/a                  show all attack types
+        show attack/a [attack_name]     show all test cases in the attack type
+        show bench/b                    show all benchmarks
+        show bench/b [bench_name]       show all test cases under the benchmark'''
         global cases,select_cases
+        i = 1
+        types=set()
 
-        # if tag
-        if len(line.split())==2:
-            tag = line.split()[1]
-            i = 1
-            for case in cases:
-                if tag in case.tags:
-                    print i, ':', case.path.replace(os.path.abspath(root_path+'/src')+'/','')
-                i += 1
-
-            pass
-        # no arg
-        elif len(line.strip()) ==0 :
-            i = 1
+        # if all
+        if len(line.split())==0:
             for case in cases:
                 print i, ':', case.path.replace(os.path.abspath(root_path+'/src')+'/','')
                 i += 1
-        # path
-        else:
-            path=line.strip()
-            i = 1
-            for case in cases:
-                if case.path.startswith(os.path.abspath(root_path+'/src/'+path)):
-                    print i, ':', case.path.replace(os.path.abspath(root_path+'/src')+'/','')
-                i += 1
-
+        # if 1 arg
+        elif len(line.split())==1:
+            # if vul
+            if line.startswith('v'):
+                for case in cases:
+                    types.update(case.define_data['vul_type'])
+            # if attack
+            if line.startswith('a'):
+                for case in cases:
+                    types.update([i["type"] for i in case.define_data["attack_class"]])
+            # if bench
+            if line.startswith('b'):
+                for case in cases:
+                    types.update([case.define_data['bench']])
+            for t in types:
+                print t
+        # if 2 arg
+        elif len(line.split())==2:
+            arg_name = line.split()[1]
+            # if vul
+            if line.startswith('v'):
+                for case in cases:
+                    if arg_name in case.define_data["vul_type"]:
+                        print i, ':', case.path.replace(os.path.abspath(root_path+'/src')+'/','')
+                    i += 1
+            # if attack
+            if line.startswith('a'):
+                for case in cases:
+                    if arg_name in [att['type'] for att in case.define_data["attack_class"]]:
+                        print i, ':', case.path.replace(os.path.abspath(root_path+'/src')+'/','')
+                    i += 1
+                    # if bench
+            if line.startswith('b'):
+                for case in cases:
+                    if arg_name == case.define_data["bench"]:
+                        print i, ':', case.path.replace(os.path.abspath(root_path+'/src')+'/','')
+                    i += 1
 
     def do_guide(self, line):
         print self.intro

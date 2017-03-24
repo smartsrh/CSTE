@@ -9,17 +9,6 @@ from script_tools import new_terminal_exit,new_terminal
 
 class Case():
     '''Class of test cases
-        path: abs path
-        intro: introduction  (optional)
-        run_vul: cmd
-        run_exp: cmd         (optional)
-        run_check: cmd
-        compile: cmd
-        aslr: bool
-        dep: bool
-        stack: bool          (optional)
-        tag: tags
-        release: bool
     '''
     def __init__(self,abs_path):
         self.path = abs_path
@@ -39,7 +28,7 @@ class Case():
         # required
         return True  # Succeed
 
-    def run(self, input_name=None):
+    def run(self, input_name=None, auto_aslr = False):
         if not self.check_define():
             print '[Error]: Failed check the info file. Stop.'
             return
