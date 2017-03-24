@@ -11,9 +11,9 @@
   "default_attack_name":"code_injection",
   "default_normal_name":"hello_world_normal",
 
-  "vul_path":"./vul/",
+  "vul_path":"./vul/stack_overflow",
   "compile":"./compile.sh",
-  "check_path":"./check/",
+  "check_path":"./check/stack_overflow_check",
 
   "normal_class":[
     {

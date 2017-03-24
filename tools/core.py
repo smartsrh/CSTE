@@ -58,7 +58,7 @@ class Case():
             print "Not supported yet"
 
     def compile(self,dep=None,stack=None):  # TODO did compile finish? we may run it in current process to make sure.
-        if "compile" in self.define_data.keys:
+        if "compile" in self.define_data.keys():
             os.chdir(self.path)
             os.popen(self.define_data["compile"])
 
@@ -90,7 +90,13 @@ def list_cases(path):
 
 
 if __name__=='__main__':
-    c = Case("/home/readm/CSTE/src/sample")
+    c = Case("/home/readm/CSTE/src/unsorted/buffer_overflow_gyj_001")
+    #print 'cd'
+    #c.check_define()
+    #print 'c'
+    #c.compile()
+    #print 'r'
     #c.run()
-    #c.check_define(check_optional=True)
-    #print list_cases('/home/readm/CSTE/src')
+    #print 'c'
+    #print c.check()
+

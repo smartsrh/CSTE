@@ -46,8 +46,8 @@ void printf_file(char file_name[]){
 }
 
 int main(int argc,char *argv[]){
-    if(access("../output/code_injection_output.txt",0)==0)
-        remove("../output/code_injection_output.txt");
+    if(access("./output/code_injection_output.txt",0)==0)
+        remove("./output/code_injection_output.txt");
     printf_file(argv[1]);
     return 0;
 }

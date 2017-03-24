@@ -9,12 +9,14 @@
 
 void check(){
     FILE* fp; 
-    fp=fopen("../output/code_injection_output.txt","r"); 
+    fp=fopen("./output/code_injection_output.txt","r"); 
     if(fp==NULL){
-        printf("attack fail, Do not find code_injection_output.txt file !!!\n");
+        printf("Fail: File code_injection_output.txt not found!!!\n");
+	return; 
     }
     if(fgetc(fp)==EOF){
-        printf("attack fail, file is null !!!\n");
+        printf("Fail: File is empty!!!\n");
+	return;
     }
     fseek(fp, 0, SEEK_END);
     int file_size;
