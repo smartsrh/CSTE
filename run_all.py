@@ -50,15 +50,17 @@ class ui(cmd.Cmd):
 
     def do_show(self, line):
         '''
-        Options:
-        bench, vul, attack, mode
+        Options(default value):
+        bench(all), vul(all), attack(all), mode(attack)
 
         Format:
-        show                            show all settings
+        show                            show all options
         show vul/v                      show all vulnerability types
         show attacks/a                  show all attack types
         show bench/b                    show all benchmarks
         mode: attack/normal
+
+        show all                        show all test cases for single run
 
         Use "set key value" to set these options.
         Use "run" to run all test cases.
@@ -71,11 +73,13 @@ class ui(cmd.Cmd):
         # if all
         if len(line.split())==0:
             self.do_help("show")
-            #for case in cases:
-            #    print i, ':', case.path.replace(os.path.abspath(root_path+'/src')+'/','')
-            #    i += 1
         # if 1 arg
         elif len(line.split())==1:
+            # if all
+            if line.startswith('a'):
+                for case in cases:
+                    print i, ':', case.path.replace(os.path.abspath(root_path+'/src')+'/','')
+                    i += 1
             # if vul
             if line.startswith('v'):
                 for case in cases:
@@ -115,48 +119,79 @@ class ui(cmd.Cmd):
     def do_guide(self, line):
         print self.intro
 
+    def _count(self):
+        global cases,select_cases,select_bench,select_vul,select_attack,attack_mode
+        def in_bench(c):
+            if not select_bench: return True
+            else:
+                if c.define_data['bench'] in select_bench: return True
+                else: return False
+
+        def in_vul(c):
+            if not select_vul: return True
+            else:
+                for v in c.define_data['vul_type']:
+                    if v in select_vul: return True
+                return False
+
+        def in_attack(c):
+            if not select_attack: return True
+            else:
+                for a in [a['type'] for a in c.define_data["attack_class"]]:
+                    if a in select_attack: return True
+                return False
+
+        def in_mode(c):
+            if attack_mode:
+                return True if len(c.define_data["attack_class"]) else False
+            else:
+                return True if len(c.define_data["normal_class"]) else False
+
+        select_cases = []
+        for case in cases:
+            if in_bench(case) and in_vul(case) and in_attack(case) and in_mode(case):
+                select_cases.append(case)
+
     def do_set(self, line):
         '''Select all/by bench/vul type/attack type/attack/normal
         Format:
-        (default)                               select all
+        (default)                            select all
         set bench/b [bench_name]             select all test cases in the bench
         set vul/v [vul_type]                 select all test cases in the vulnerability type
         set attack/a [attack_type]           select all test cases with the attack_type(and select attack mode)
-        set attack/a                         select attack mode(default)
-        set normal/n                         select normal mode
-        set 1,3...(numbers)                  select by numbers
+        set mode attack/a/normal/n           select attack/normal mode
+        set single/s [number]                select by number (in show all) (only run single)
         '''
-        global cases,select_cases
+        global cases,select_cases,select_bench,select_cases,select_attack,select_vul,attack_mode
         # if number
-        if line[0] in '0123456789':
-            indexes = [int(i)-1 for i in line.split()]
+        if line.startswith('s'):
+            indexes = [int(i)-1 for i in line.split()[1:]]
             select_cases = [cases[i]  for i in indexes]
         # if bench
         elif line.startswith('b'):
-            arg = line.split()[1] if len(line.split())>1 else None
+            arg = line.split()[1:] if len(line.split())>1 else None
             if not arg :print "Format error."; return
-            select_cases = [case for case in cases if case.define_data['bench']==arg]
+            select_bench = arg
+            self._count()
         # if vul
         elif line.startswith('v'):
-            arg = line.split()[1] if len(line.split())>1 else None
+            arg = line.split()[1:] if len(line.split())>1 else None
             if not arg :print "Format error."; return
-            select_cases = [case for case in cases if arg in case.define_data['vul_type']]
+            select_vul = arg
         # if attack
         elif line.startswith('a'):
+            arg = line.split()[1:] if len(line.split())>1 else None
+            if not arg :print "Format error."; return
+            select_attack = arg
+        # if mode
+        elif line.startswith('m'):
             arg = line.split()[1] if len(line.split())>1 else None
-            # if attack arg
-            if arg:
-                select_cases = [case for case in cases if arg in [i["type"] for i in case.define_data["attack_class"]]]
-                select_attack.append(arg)
+            if arg.startswith('a'):
                 attack_mode = True
-            # if attack only
+            elif arg.stratswith('n'):
+                attack_mode = False
             else:
-                attack_mode = True
-        # if normal
-        elif line.startswith:
-            pass
-
-
+                print "Wrong mode."
 
         print "Now selected %d cases" % len(select_cases)
 

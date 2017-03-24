@@ -28,6 +28,16 @@ class Case():
         # required
         return True  # Succeed
 
+    def run_all(self, attack_type=[], attack_mode=True):
+        if attack_mode:
+            if attack_type:
+                for type in attack_type:
+                    for a in self.define_data["attack_class"]:
+                        if a['type']==type:
+                            pass
+                            #self.run(input_name=)
+
+
     def run(self, input_name=None, auto_aslr = False):
         if not self.check_define():
             print '[Error]: Failed check the info file. Stop.'

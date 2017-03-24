@@ -4,7 +4,7 @@
   "description":"This is a classic stack_overflow vul.",
 
   "bench":"unsorted",
-  "support_run_all":false,
+  "support_run_all":true,
   "bit":64,
   "vul_type":["stack_overflow"],
   "attack_model":"data",
