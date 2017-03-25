@@ -7,16 +7,19 @@ name:
 #designer's name
 designer:
 
+#designer's email
+email:
+
 #simple introduce about the vul
 intro:
 
 
 ##conf info
-#support run_all: yes, no
-run_all:
+#support run_all: true, false
+support_run_all:
 
-#support check: yes, no
-check:
+#support check: true, false
+support_check:
 
 
 ##vul info
@@ -26,57 +29,72 @@ bench:
 #bit: 32, 64
 bit:
 
-#vul'type: stack_overflow, heap_overflow, BSS_overflow, double_free, use_afer_free, format_string, memory_leak, other, hybrid_vuls
-vul_type:
-
-#number of vul in program: (default is 1)
-vul_num:
-
-
-##attack info
 #attack model: data, program
 attack_model:
 
-#input_num = normal_num + attack_num, default is 2
-input_num:
+#vul'type: stack_overflow, heap_overflow, BSS_overflow, double_free, use_afer_free, format_string, memory_leak, other, hybrid_vuls
+vul_type:
 
-#number of normal input, default is 1
-normal_num:
 
-#number of attack input, default is 1
-attack_num:
+##path
+#vul's path
+vul_path:
 
-#info of normal input
-normal_class [0 ~ normal_num-1] {
+#compile's path
+compile_path:
+
+#check's path
+check_path:
+
+
+##attack info
+#default attack input's name
+default_attack_name:
+
+#default normal input's name
+default_normal_name:
+
+#info of all normal input
+normal_class {
 
 #normal input name
-normal_name: 
+name: 
 
 #simple introduce about the normal input
-normal_intro:
+intro:
+
+#path of the normal input
+path:
 
 }
 
-#info of attack input
-attack_class [0 ~ attack_num-1] {
+#info of all attack input
+attack_class {
 
 #attack input name
-attack_name:
-
-#attack type: code_injection, r2libc, rop, jop, fop, other_code_reuse(other code reuse attacks, except r2libc/rop/jop/fop), dop, other_non_control_data(other non-control-data attacks, except dop), other(other attacks), hybrid_attacks
-attack_type:
-
-#aslr status: on, off
-aslr:
-
-#dep status: on, off
-dep:
-
-#stack cookie status: on, off
-stack_cookie:
+name:
 
 #simple introduce about the attack input
-attack_intro:
+intro:
+
+#path of the attack input
+path:
+
+#attack type: code_injection, r2libc, rop, jop, fop, other_code_reuse(other code reuse attacks, except r2libc/rop/jop/fop), dop, other_non_control_data(other non-control-data attacks, except dop), other(other attacks), hybrid_attacks
+type:
+
+#attack goal: open_shell, close_shell, read_file, write_file, system_call, close_dep
+goal:
+
+#security can be bypassed by the attack input
+#dep status: true, false
+dep:
+
+#aslr status: true, false
+aslr:
+
+#stack cookie status: true, false
+stack_cookie:
 
 }
 

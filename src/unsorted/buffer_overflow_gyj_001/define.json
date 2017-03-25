@@ -1,32 +1,37 @@
 {
   "name": "stack_overflow",
   "designer": "guoyingjie",
-  "description": "This is a classic stack_overflow vul.",
-  "bench": "unsorted",
+  "email": "guoyingjie@iie.ac.cn",
+  "intro": "This is a classic stack_overflow vul.",
   "support_run_all": true,
+  "support_check": true,
+  "bench": "unsorted",
   "bit": 64,
+  "attack_model": "data",
   "vul_type": [
     "stack_overflow"
   ],
-  "attack_model": "data",
+  "vul_path": "./vul/stack_overflow",
+  "compile_path": "./compile.sh",
+  "check_path": "./check/stack_overflow_check",
   "default_attack_name": "code_injection",
   "default_normal_name": "hello_world_normal",
-  "vul_path": "./vul/stack_overflow",
-  "compile": "./compile.sh",
-  "check_path": "./check/stack_overflow_check",
   "normal_class": [
     {
       "name": "hello_world_normal",
-      "description": "Print hello world",
+      "intro": "Print hello world",
       "path": "./input/hello_world_normal.txt"
     }
   ],
   "attack_class": [
     {
       "name": "code_injection",
-      "description": "The function is writing string to output file",
+      "intro": "The function is writing string to output file",
       "path": "./input/code_injection.txt",
       "type": "code_injection",
+      "goal": [
+        "write_file"
+      ],
       "security_bypass": {
         "dep": false,
         "aslr": false,
