@@ -1,41 +1,38 @@
 {
-  "name":"stack_overflow",
-  "designer":"guoyingjie",
-  "description":"This is a classic stack_overflow vul.",
-
-  "bench":"unsorted",
-  "support_run_all":true,
-  "bit":64,
-  "vul_type":["stack_overflow"],
-  "attack_model":"data",
-  "default_attack_name":"code_injection",
-  "default_normal_name":"hello_world_normal",
-
-  "vul_path":"./vul/stack_overflow",
-  "compile":"./compile.sh",
-  "check_path":"./check/stack_overflow_check",
-
-  "normal_class":[
+  "name": "stack_overflow",
+  "designer": "guoyingjie",
+  "description": "This is a classic stack_overflow vul.",
+  "bench": "unsorted",
+  "support_run_all": true,
+  "bit": 64,
+  "vul_type": [
+    "stack_overflow"
+  ],
+  "attack_model": "data",
+  "default_attack_name": "code_injection",
+  "default_normal_name": "hello_world_normal",
+  "vul_path": "./vul/stack_overflow",
+  "compile": "./compile.sh",
+  "check_path": "./check/stack_overflow_check",
+  "normal_class": [
     {
-      "name":"hello_world_normal",
-      "description":"Print hello world",
-      "path":"./input/hello_world_normal.txt"
+      "name": "hello_world_normal",
+      "description": "Print hello world",
+      "path": "./input/hello_world_normal.txt"
     }
   ],
-
-  "attack_class":[
+  "attack_class": [
     {
-      "name":"code_injection",
-      "description":"The function is writing string to output file",
-      "path":"./input/code_injection.txt",
-      "type":"code_injection",
-      "security_bypass":{
-        "dep":false,
-        "aslr":false,
-        "stack_cookie":false
+      "name": "code_injection",
+      "description": "The function is writing string to output file",
+      "path": "./input/code_injection.txt",
+      "type": "code_injection",
+      "security_bypass": {
+        "dep": false,
+        "aslr": false,
+        "stack_cookie": false
       }
     }
   ]
-
 }
 
