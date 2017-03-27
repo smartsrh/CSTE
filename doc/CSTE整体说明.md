@@ -45,14 +45,13 @@
 直接运行run_all.py即可。主调程序run_all.py用Python语言编写。
 
 ### 4.3 主调程序的基本命令说明：
-+ 1）help：帮助，打印基本命令及相关介绍
-+ 2）show：显示可配置信息。
-+ 2.1）show
-+ 2.2）show key
-+ 3）set：配置运行参数。
-+ 3.1）set value
-+ 3.2）set key vaule
-+ 4）run：运行。
-+ 4.1）run
-+ 4.2）run single
++ 1）`help`：帮助，`help [cmd]`显示对应指令的帮助信息。
++ 2）`show`：显示可配置信息。
++ 2.1）`show [key]`：显示key下可配置选项。
++ 2.2）`show all`：显示所有测试用例。
++ 3）`set`：配置运行参数。
++ 3.1）`set [value]`：快速设置。
++ 3.2）`set [key] [vaule]`：设置某一选项。
++ 3.3）`set single [number]`：选择一个或多个测试用例，（覆盖分类选项）。
++ 4）`run`：运行。
 
