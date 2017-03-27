@@ -6,6 +6,7 @@ import json
 import time
 from script_tools import new_terminal_exit, aslr_on, aslr_off
 
+__author__ = "readm"
 
 class Case():
     '''Class of test cases
@@ -42,7 +43,7 @@ class Case():
                     if check: check_return.append(self.check())
         else:
             for a in self.define_data["normal_class"]:
-                self.run(input_name=a['name'], auto_aslr=True)
+                self.run(attack=False,input_name=a['name'], auto_aslr=True)
                 if check: check_return.append(self.check())
         return check_return
 
@@ -54,34 +55,34 @@ class Case():
         if self.define_data["attack_model"] == "data":
             if not input_name: input_name = self.define_data["default_attack_name"]
             input_file = ''
-            for attack in self.define_data[_class]:
-                if attack["name"] == input_name:
-
+            for _input in self.define_data[_class]:
+                if _input["name"] == input_name:
                     if auto_aslr == True and _class == 'attack_class':
-                        if attack["security_bypass"]["aslr"]:
+                        if _input["security_bypass"]["aslr"]:
                             aslr_on()
                         else:
                             aslr_off()
 
-                    input_file = attack["path"]
+                    input_file = _input["path"]
                     break
 
             if input_file:
                 os.chdir(self.path)
                 os.popen(new_terminal_exit(self.define_data['vul_path'] + ' ' + input_file))
             else:
-                print "Attack %s not found." % input_name
+                print "Input %s not found." % input_name
 
         else:
             print "Not supported yet"
 
     def compile(self, dep=None, stack=None):  # TODO did compile finish? we may run it in current process to make sure.
-        if "compile" in self.define_data.keys():
+        if "compile_path" in self.define_data.keys():
             os.chdir(self.path)
-            os.popen(self.define_data["compile"])
+            os.popen(self.define_data["compile_path"])
 
     def check(self):
         '''Return check answer.'''
+        os.chdir(self.path)
         p = subprocess.Popen(self.define_data["check_path"], stdout=subprocess.PIPE, shell=True)
         res = p.stdout.read().strip()
         return res
@@ -109,11 +110,11 @@ def list_cases(path):
 
 if __name__ == '__main__':
     c = Case("/home/readm/CSTE/src/unsorted/buffer_overflow_gyj_001")
-    # print 'cd'
-    # c.check_define()
-    # print 'c'
-    # c.compile()
-    # print 'r'
-    # c.run()
-    # print 'c'
-    # print c.check()
+    print 'cd'
+    c.check_define()
+    print 'c'
+    c.compile()
+    print 'r'
+    c.run()
+    print 'c'
+    print c.check()
