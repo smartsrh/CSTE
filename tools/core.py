@@ -108,13 +108,3 @@ def list_cases(path):
     return case_lst
 
 
-if __name__ == '__main__':
-    c = Case("/home/readm/CSTE/src/unsorted/buffer_overflow_gyj_001")
-    print 'cd'
-    c.check_define()
-    print 'c'
-    c.compile()
-    print 'r'
-    c.run()
-    print 'c'
-    print c.check()
