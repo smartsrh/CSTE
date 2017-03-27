@@ -24,17 +24,12 @@ root_path = os.path.abspath('.')
 class ui(cmd.Cmd):
     prompt = "CSTE>"
     intro = '''简要说明：通过以下命令, 运行指定的漏洞程序
-        show                      显示可以利用的所有程序
-        select i                  选择第i个要执行的程序
-        select i1 i2 ...          选择第i1,i2,i3...个要执行的程序
-        select name/path          选择名字或路径下所有程序
-        select tag name           选择name类型的程序
-        run                       运行选择的漏洞程序,并进行攻击
-        run normal                运行选择的漏洞程序,正常运行
-        attach i                  附加调试第i个程序
+        show                      显示可配置信息
+        set                       配置运行参数
+        run                       运行选择的漏洞程序
         aslr status               获取ASLR的状态
         aslr on/off/conservative  修改ASLR状态
-        help run                  查看相关命令信息
+        help [cmd]                查看相关命令信息
         q                         退出'''
 
     def do_reload(self, line):
@@ -166,7 +161,8 @@ class ui(cmd.Cmd):
                 select_cases.append(case)
 
     def do_set(self, line):
-        '''Select all/by bench/vul type/attack type/attack/normal
+        '''
+        Select all/by bench/vul type/attack type/attack/normal
         Format:
         (default)                            select all
         set bench/b [bench_name]             select all test cases in the bench
@@ -176,6 +172,10 @@ class ui(cmd.Cmd):
         set single/s [number]                select by number (in show all) (only run single)
         '''
         global cases, select_cases, select_bench, select_cases, select_attack, select_vul, attack_mode
+
+        if not line:
+            self.do_help('set')
+            return
         # if number
         if line.startswith('s'):
             indexes = [int(i) - 1 for i in line.split()[1:]]

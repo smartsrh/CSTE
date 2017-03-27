@@ -76,9 +76,9 @@ class Case():
             print "Not supported yet"
 
     def compile(self, dep=None, stack=None):  # TODO did compile finish? we may run it in current process to make sure.
-        if "compile" in self.define_data.keys():
+        if "compile_path" in self.define_data.keys():
             os.chdir(self.path)
-            os.popen(self.define_data["compile"])
+            os.popen(self.define_data["compile_path"])
 
     def check(self):
         '''Return check answer.'''
