@@ -1,6 +1,8 @@
 #! /usr/bin/python
 #coding:utf-8
-import sys, os, json, subprocess
+import sys, os, subprocess
+
+__author__ = "readm"
 
 '''Tools for VRL script'''
 
@@ -22,7 +24,6 @@ def aslr_status():
 
 def aslr_on():
     if aslr_status() == 2:
-        print 'ASLR is already ON\n'
         return
     print 'ASLR>>ON, may need password.\n'
     p = subprocess.Popen(r"sudo sysctl -w kernel.randomize_va_space=2",\
@@ -31,7 +32,6 @@ def aslr_on():
 
 def aslr_off():
     if aslr_status() == 0:
-        print 'ASLR is already OFF\n'
         return
     print 'ASLR>>OFF, may need password.\n'
     p = subprocess.Popen(r"sudo sysctl -w kernel.randomize_va_space=0", \
@@ -40,7 +40,6 @@ def aslr_off():
 
 def aslr_conservative():
     if aslr_status() == 1:
-        print 'ASLR is already Conservative\n'
         return
     print 'ASLR>>Conservative, may need password.\n'
     p = subprocess.Popen(r"sudo sysctl -w kernel.randomize_va_space=1", \

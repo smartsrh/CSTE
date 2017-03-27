@@ -15,6 +15,7 @@ select_bench = []
 select_vul = []
 select_attack = []
 attack_mode = True
+run_single = False
 
 report_buf = []
 
@@ -61,7 +62,7 @@ class ui(cmd.Cmd):
         Use "run" to run all test cases.
         Use "show selected/s" to confirm the options.
         '''
-        global cases, select_cases, select_vul, select_attack, select_bench, attack_mode
+        global cases, select_cases, select_vul, select_attack, select_bench, attack_mode, run_single
         i = 1
         types = set()
 
@@ -76,6 +77,7 @@ class ui(cmd.Cmd):
                 print "Attack types: ", select_attack if select_attack else 'all'
                 print "Bench mark: ", select_bench if select_bench else 'all'
                 print "Mode:", 'Attack' if attack_mode else 'Normal'
+                print "Single mode:", "Yes" if run_single else "No"
                 return
             # if vul
             if line.startswith('v'):
@@ -164,50 +166,97 @@ class ui(cmd.Cmd):
         '''
         Select all/by bench/vul type/attack type/attack/normal
         Format:
-        (default)                            select all
-        set bench/b [bench_name]             select all test cases in the bench
-        set vul/v [vul_type]                 select all test cases in the vulnerability type
-        set attack/a [attack_type]           select all test cases with the attack_type(and select attack mode)
-        set mode attack/a/normal/n           select attack/normal mode
-        set single/s [number]                select by number (in show all) (only run single)
+        (default)                        select all
+        set bench/b [bench_name]         select all test cases in the bench
+        set vul/v [vul_type]             select all test cases in the vulnerability type
+        set attack/a [attack_type]       select all test cases with the attack_type(and select attack mode)
+        set mode/m attack/a/normal/n     select attack/normal mode
+        set single/s [number]            select by number (in "show all") (will override/override by [bench,vul,attack]
+
+        Quick set:
+        set default                      default
+        set all                          all test cases, same as default
+        set normal                       all test cases, but normal input
+        set attack                       all test cases, same as default
         '''
-        global cases, select_cases, select_bench, select_cases, select_attack, select_vul, attack_mode
+        global cases, select_cases, select_bench, select_cases, select_attack, select_vul, attack_mode, run_single
 
         if not line:
             self.do_help('set')
             return
-        # if number
-        if line.startswith('s'):
-            indexes = [int(i) - 1 for i in line.split()[1:]]
-            select_cases = [cases[i] for i in indexes]
-        # if bench
-        elif line.startswith('b'):
-            arg = line.split()[1:] if len(line.split()) > 1 else None
-            if not arg: print "Format error."; return
-            select_bench = arg
-            self._count()
-        # if vul
-        elif line.startswith('v'):
-            arg = line.split()[1:] if len(line.split()) > 1 else None
-            if not arg: print "Format error."; return
-            select_vul = arg
-            self._count()
-        # if attack
-        elif line.startswith('a'):
-            arg = line.split()[1:] if len(line.split()) > 1 else None
-            if not arg: print "Format error."; return
-            select_attack = arg
-            self._count()
-        # if mode
-        elif line.startswith('m'):
-            arg = line.split()[1] if len(line.split()) > 1 else None
-            if arg.startswith('a'):
+
+        # not quick set
+        if len(line.split())>1:
+            # if number
+            if line.startswith('s'):
+                indexes = [int(i) - 1 for i in line.split()[1:]]
+                select_cases = [cases[i] for i in indexes]
+                run_single = True
+            # if bench
+            elif line.startswith('b'):
+                arg = line.split()[1:] if len(line.split()) > 1 else None
+                if not arg: print "Format error."; return
+                select_bench = arg
+                self._count()
+                if run_single:
+                    print "This operation will override the [single] selection."
+                    run_single = False
+            # if vul
+            elif line.startswith('v'):
+                arg = line.split()[1:] if len(line.split()) > 1 else None
+                if not arg: print "Format error."; return
+                select_vul = arg
+                self._count()
+                if run_single:
+                    print "This operation will override the [single] selection."
+                    run_single = False
+            # if attack
+            elif line.startswith('a'):
+                arg = line.split()[1:] if len(line.split()) > 1 else None
+                if not arg: print "Format error."; return
+                select_attack = arg
+                self._count()
+                if run_single:
+                    print "This operation will override the [single] selection."
+                    run_single = False
+            # if mode
+            elif line.startswith('m'):
+                arg = line.split()[1] if len(line.split()) > 1 else None
+                if arg.startswith('a'):
+                    attack_mode = True
+                elif arg.startswith('n'):
+                    attack_mode = False
+                else:
+                    print "Wrong mode."
+                if not run_single: self._count()
+        # quick set: default, all, normal, attack
+        else:
+            if line.strip()=='default':
+                select_cases = []
+                select_bench = []
+                select_vul = []
+                select_attack = []
                 attack_mode = True
-            elif arg.stratswith('n'):
+            elif line.strip()=='all':
+                select_cases = []
+                select_bench = []
+                select_vul = []
+                select_attack = []
+                attack_mode = True
+            elif line.strip()=='normal':
+                select_cases = []
+                select_bench = []
+                select_vul = []
+                select_attack = []
                 attack_mode = False
-            else:
-                print "Wrong mode."
+            elif line.strip()=='attack':
+                select_cases = []
+                select_bench = []
+                select_vul = []
+                select_attack = []
+                attack_mode = True
             self._count()
+
 
         print "Now selected %d cases" % len(select_cases)
 
@@ -216,17 +265,14 @@ class ui(cmd.Cmd):
         Run
         Format:
         run                 run the test cases and show the report
-        run single          run the test cases selected by (select single)
-
         '''
         global report_buf, select_cases, cases
         if not select_cases:
             select_cases = cases
             print "No test cases selected, run all."
-        if line.strip():
-            print "Not implement yet."
         else:
             for c in select_cases:
+                print colorize("Running: ",'cyan'), c.define_data['name']
                 report_buf += c.run_all(attack_type=select_attack, attack_mode=attack_mode, check=True)
 
         for i in report_buf: print i
@@ -249,15 +295,15 @@ class ui(cmd.Cmd):
 
     def do_add(self, line):
         '''Add cases after select'''
-        print '''Not implement yet.'''
+        print '''Not implemented yet.'''
 
     def do_remove(self, line):
         '''Remove cases after select'''
-        print '''Not implement yet.'''
+        print '''Not implemented yet.'''
 
     def do_report(self, line):  # design how to report
         ''''''
-        print '''Not implement yet.'''
+        print '''Not implemented yet.'''
 
     def do_aslr(self, line):
         '''Check status/Turn on/Turn off ASLR of system.
