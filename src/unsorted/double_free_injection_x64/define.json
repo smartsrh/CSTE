@@ -1,0 +1,45 @@
+{
+  "name": "double_free_injection",
+  "designer": [
+    "Yawen Wang", "Ronghao Shi", "Mingtao Song"
+  ],
+  "email": "shironghao16@mails.ucas.ac.cn",
+  "intro": "This is a classic double_free_injection vul.",
+  "support_run_all": true,
+  "support_check": true,
+  "bench": "unsorted",
+  "bit": 64,
+  "attack_model": "data",
+  "vul_type": [
+    "double_free"
+  ],
+  "vul_path": "./vul/double_free",
+  "compile_path": "./compile.sh",
+  "check_path": "./check/double_free_injection_check",
+  "default_attack_name": "input",
+  "default_normal_name": null,
+  "normal_class": [
+    {
+      "name": null,
+      "intro": "Print hello world",
+      "path": null
+    }
+  ],
+  "attack_class": [
+    {
+      "name": "code_injection",
+      "intro": "The function is writing string to output file",
+      "path": "./input/input.txt",
+      "type": "code_injection",
+      "goal": [
+        "write_file"
+      ],
+      "security_bypass": {
+        "dep": true,
+        "aslr": true,
+        "stack_cookie": true
+      }
+    }
+  ]
+}
+

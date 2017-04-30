@@ -1,3 +1,4 @@
+// gcc -o double_free double_free.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,7 +22,7 @@ void attack(){
 
 int main(){
 
-	char file_name[] = "shellcode.txt";
+	char file_name[] = "../input/input.txt";
 	char buf[SIZE];
 	FILE *fp;
     int v,length=0;
