@@ -124,3 +124,5 @@ ENV/
 # Rope project settings
 .ropeproject
 
+# Mac DS_Store
+.DS_Store
