@@ -22,7 +22,7 @@ void attack(){
 
 int main(){
 
-	char file_name[] = "./input/input.txt";
+	char file_name[] = "../input/input.txt";
 	char buf[SIZE];
 	FILE *fp;
     int v,length=0;
