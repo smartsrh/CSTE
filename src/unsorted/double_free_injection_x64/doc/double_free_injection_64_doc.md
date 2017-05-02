@@ -28,7 +28,7 @@ free(p1); //double free
 
 ```c
 if (__builtin_expect (FD->bk != P || BK->fd != P, 0))
-   	malloc_printerr (check_action, "corrupted double-linked list", P, AV);
+  malloc_printerr (check_action, "corrupted double-linked list", P, AV);
 ```
 	
    	
@@ -78,9 +78,9 @@ mprotect((void *)((uint64_t)p2 & ~4095), 4096, PROT_WRITE|PROT_READ|PROT_EXEC);
 其次，为了绕过ASLR，漏洞程序在构造的过程中对堆块指针进行全局声明，如下：
 
 ```c
-	unsigned char *p0;
-	unsigned char *p1;
-	unsigned char *p2;
+unsigned char *p0;
+unsigned char *p1;
+unsigned char *p2;
 ```
 
 最后，本程序不牵扯栈保护的相关内容。
@@ -101,13 +101,12 @@ mprotect((void *)((uint64_t)p2 & ~4095), 4096, PROT_WRITE|PROT_READ|PROT_EXEC);
 编译命令和配置信息已经写入 `compile.sh` 和 `define.json` 文件
 
 ## 6) shellcode 生成 
-用汇编写一段满足攻击要求的程序shellcode.asm
-按照如下命令生成shellcode
-	nasm -f elf64 shellcode.asm -o shellcode.o
-	ld -s -o shellcode shellcode.o
-
+用汇编写一段满足攻击要求的程序 `shellcode.asm`
+按照如下命令生成 shellcode :
 ```bash
-	for i in $(objdump -d shellcode |grep "^ " |cut -f2); do echo -n '\x'$i; done; echo
+nasm -f elf64 shellcode.asm -o shellcode.o
+ld -s -o shellcode shellcode.o
+for i in $(objdump -d shellcode |grep "^ " |cut -f2); do echo -n '\x'$i; done; echo
 ```
 
 
