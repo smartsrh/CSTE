@@ -103,8 +103,10 @@ mprotect((void *)((uint64_t)p2 & ~4095), 4096, PROT_WRITE|PROT_READ|PROT_EXEC);
 按照如下命令生成shellcode
 	nasm -f elf64 shellcode.asm -o shellcode.o
 	ld -s -o shellcode shellcode.o
-	
+
+```bash
 	for i in $(objdump -d shellcode |grep "^ " |cut -f2); do echo -n '\x'$i; done; echo
+```
 
 
 
