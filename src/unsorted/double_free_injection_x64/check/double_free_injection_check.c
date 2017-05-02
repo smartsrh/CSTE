@@ -26,7 +26,7 @@ void check(){
     tmp =  (char *)malloc(file_size * sizeof(char));
     fread(tmp, file_size, sizeof(char), fp);
     tmp[file_size-1]='\0';
-    if(strcmp(tmp,"double_free_injection attack succeeded")==0)
+    if(strcmp(tmp,"Double free attack success!")==0)
         printf("Success: double free injection attack succeeded\n");
     else
         printf("Fail: double free injection attack failed\n");
